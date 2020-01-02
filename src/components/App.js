@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
-// import SignUpForm from './SignUpForm/SignUpForm';
-// import FriendList from './FriendList/FriendList';
+import CreateContact from './CreateContact/CreateContact';
+import Filter from './Filter/Filter';
+import ContactList from './ContactList/ContactList';
+import styles from './StyledDiv/styles.module.css';
 
 const filterContactsByQuery = (contacts, filter) => {
-  return contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase()),
+  return contacts.filter(
+    contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase()) ||
+      contact.number.includes(filter),
   );
 };
 
@@ -22,6 +26,12 @@ class App extends Component {
     number: '',
   };
 
+  inputIDs = {
+    nameID: shortid.generate(),
+    numberID: shortid.generate(),
+    filterID: shortid.generate(),
+  };
+
   handleChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
@@ -36,7 +46,7 @@ class App extends Component {
       number,
     };
     if (contacts.find(contact => contact.name === name)) {
-      // console.log('This name already exists');
+      alert('This name already exists');
     } else {
       this.setState(state => ({
         contacts: [...state.contacts, createContact],
@@ -45,38 +55,43 @@ class App extends Component {
     this.resetForm();
   };
 
+  handleDelete = id => {
+    this.setState(state => ({
+      contacts: state.contacts.filter(contact => contact.id !== id),
+    }));
+  };
+
   resetForm = () => {
     this.setState({ name: '', number: '' });
   };
 
   render() {
     const { name, contacts, number, filter } = this.state;
+    const { nameID, numberID, filterID } = this.inputIDs;
     const onChange = this.handleChange;
     const onSubmit = this.handleSubmit;
+    const onDelete = this.handleDelete;
+
     const filtedContacts = filterContactsByQuery(contacts, filter);
 
     return (
-      <div>
+      <div styles={styles}>
         <h1>Phonebook</h1>
-        <form onSubmit={onSubmit}>
-          Name
-          <input name="name" value={name} onChange={onChange} type="text" />
-          <br />
-          Phone
-          <input name="number" value={number} onChange={onChange} type="text" />
-          <br />
-          <button type="submit">Add contact</button>
-        </form>
+        <CreateContact
+          name={name}
+          nameID={nameID}
+          number={number}
+          numberID={numberID}
+          onChange={onChange}
+          onSubmit={onSubmit}
+        />
         <h2>Contacts</h2>
-        <p>Find contacts by name</p>
-        <input name="filter" value={filter} onChange={onChange} type="text" />
-        <ul>
-          {filtedContacts.map(contact => (
-            <li key={contact.id}>
-              {contact.name}: {contact.number}
-            </li>
-          ))}
-        </ul>
+        <Filter
+          filter={filter}
+          onChange={this.handleChange}
+          filterID={filterID}
+        />
+        <ContactList onDelete={onDelete} filtedContacts={filtedContacts} />
       </div>
     );
   }
