@@ -16,6 +16,7 @@ h2 {
 
 button:active {
   background-color: rgb(28, 28, 146);
+  border: blue;
 }
 
 form {
