@@ -3,15 +3,7 @@ import shortid from 'shortid';
 import CreateContact from './CreateContact/CreateContact';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
-import styles from './StyledDiv/styles.module.css';
-
-const filterContactsByQuery = (contacts, filter) => {
-  return contacts.filter(
-    contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase()) ||
-      contact.number.includes(filter),
-  );
-};
+import FilterContactsByQuery from './FilterContactsByQuery/FilterContactsByQuery';
 
 class App extends Component {
   state = {
@@ -72,10 +64,10 @@ class App extends Component {
     const onSubmit = this.handleSubmit;
     const onDelete = this.handleDelete;
 
-    const filtedContacts = filterContactsByQuery(contacts, filter);
+    const filtedContacts = FilterContactsByQuery(contacts, filter);
 
     return (
-      <div styles={styles}>
+      <div>
         <h1>Phonebook</h1>
         <CreateContact
           name={name}
