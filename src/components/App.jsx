@@ -3,7 +3,7 @@ import shortid from 'shortid';
 import CreateContact from './CreateContact/CreateContact';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
-import FilterContactsByQuery from './FilterContactsByQuery/FilterContactsByQuery';
+import FilterContactsByQuery from '../tools/FilterContactsByQuery/FilterContactsByQuery';
 
 class App extends Component {
   state = {
