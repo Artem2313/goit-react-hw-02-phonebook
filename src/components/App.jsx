@@ -3,7 +3,7 @@ import shortid from 'shortid';
 import CreateContact from './CreateContact/CreateContact';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
-import FilterContactsByQuery from '../tools/FilterContactsByQuery/FilterContactsByQuery';
+import filterContactsByQuery from '../tools/FilterContactsByQuery/FilterContactsByQuery';
 
 class App extends Component {
   state = {
@@ -14,13 +14,9 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
   inputIDs = {
-    nameID: shortid.generate(),
-    numberID: shortid.generate(),
     filterID: shortid.generate(),
   };
 
@@ -29,22 +25,15 @@ class App extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSubmit = e => {
-    const { name, number, contacts } = this.state;
-    e.preventDefault();
-    const createContact = {
-      id: shortid.generate(),
-      name,
-      number,
-    };
-    if (contacts.find(contact => contact.name === name)) {
+  addContact = newContact => {
+    const { contacts } = this.state;
+    if (contacts.find(contact => contact.name === newContact.name)) {
       alert('This name already exists');
     } else {
       this.setState(state => ({
-        contacts: [...state.contacts, createContact],
+        contacts: [...state.contacts, newContact],
       }));
     }
-    this.resetForm();
   };
 
   handleDelete = id => {
@@ -53,30 +42,17 @@ class App extends Component {
     }));
   };
 
-  resetForm = () => {
-    this.setState({ name: '', number: '' });
-  };
-
   render() {
-    const { name, contacts, number, filter } = this.state;
-    const { nameID, numberID, filterID } = this.inputIDs;
-    const onChange = this.handleChange;
-    const onSubmit = this.handleSubmit;
+    const { contacts, filter } = this.state;
+    const { filterID } = this.inputIDs;
     const onDelete = this.handleDelete;
 
-    const filtedContacts = FilterContactsByQuery(contacts, filter);
+    const filtedContacts = filterContactsByQuery(contacts, filter);
 
     return (
       <div>
         <h1>Phonebook</h1>
-        <CreateContact
-          name={name}
-          nameID={nameID}
-          number={number}
-          numberID={numberID}
-          onChange={onChange}
-          onSubmit={onSubmit}
-        />
+        <CreateContact onAddContact={this.addContact} />
         <h2>Contacts</h2>
         <Filter
           filter={filter}
