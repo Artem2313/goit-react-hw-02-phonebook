@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import shortid from 'shortid';
+import uuidv4 from '../tools/uuid/Uuid';
 import CreateContact from './CreateContact/CreateContact';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
@@ -17,7 +17,7 @@ class App extends Component {
   };
 
   inputIDs = {
-    filterID: shortid.generate(),
+    filterID: uuidv4(),
   };
 
   handleChange = e => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import shortid from 'shortid';
 import PropTypes from 'prop-types';
+import uuidv4 from '../../tools/uuid/Uuid';
 
 export default class CreateContact extends Component {
   static propTypes = {
@@ -13,8 +13,8 @@ export default class CreateContact extends Component {
   };
 
   inputIDs = {
-    nameID: shortid.generate(),
-    numberID: shortid.generate(),
+    nameID: uuidv4(),
+    numberID: uuidv4(),
   };
 
   handleChange = e => {
@@ -25,7 +25,7 @@ export default class CreateContact extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const contact = {
-      id: shortid.generate(),
+      id: uuidv4(),
       name: this.state.name,
       number: this.state.number,
     };
