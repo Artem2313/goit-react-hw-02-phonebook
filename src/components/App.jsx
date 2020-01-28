@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import uuidv4 from '../tools/uuid/Uuid';
 import CreateContact from './CreateContact/CreateContact';
 import Filter from './Filter/Filter';
 import ContactList from './ContactList/ContactList';
@@ -14,10 +13,6 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-  };
-
-  inputIDs = {
-    filterID: uuidv4(),
   };
 
   handleChange = e => {
@@ -44,7 +39,6 @@ class App extends Component {
 
   render() {
     const { contacts, filter } = this.state;
-    const { filterID } = this.inputIDs;
     const onDelete = this.handleDelete;
 
     const filtedContacts = filterContactsByQuery(contacts, filter);
@@ -54,11 +48,7 @@ class App extends Component {
         <h1>Phonebook</h1>
         <CreateContact onAddContact={this.addContact} />
         <h2>Contacts</h2>
-        <Filter
-          filter={filter}
-          onChange={this.handleChange}
-          filterID={filterID}
-        />
+        <Filter filter={filter} onChange={this.handleChange} />
         <ContactList onDelete={onDelete} filtedContacts={filtedContacts} />
       </div>
     );
