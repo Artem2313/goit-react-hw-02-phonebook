@@ -3,20 +3,29 @@ import PropTypes from 'prop-types';
 
 const Contactlist = ({ onDelete, filtedContacts }) => (
   <ul>
-    {filtedContacts.map(contact => (
-      <li key={contact.id}>
-        {contact.name}: {contact.number}
-        <button type="button" onClick={() => onDelete(contact.id)}>
-          Delete
-        </button>
-      </li>
-    ))}
+    {filtedContacts.map(contact => {
+      const { id, name, number } = contact;
+      return (
+        <li key={id}>
+          {name}: {number}
+          <button type="button" onClick={() => onDelete(contact.id)}>
+            Delete
+          </button>
+        </li>
+      );
+    })}
   </ul>
 );
 
 Contactlist.propTypes = {
   onDelete: PropTypes.func.isRequired,
-  filtedContacts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  filtedContacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      id: PropTypes.string,
+      number: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default Contactlist;
